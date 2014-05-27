@@ -1,4 +1,4 @@
-describe('bomfTableOfContents', function() {
+describe('article', function() {
   var controller;
 
   beforeEach(function() {
