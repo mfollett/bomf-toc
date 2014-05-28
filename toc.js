@@ -21,22 +21,25 @@
         }
       };
     }).
-    directive('bomfTableOfContents', function(articleFinder, headerFinder) {
+    directive('bomfTableOfContents', function() {
       return {
         restrict: 'E',
-        scope:    false,
+        scope:    true,
         require:  '^article',
-        compile: function(element, attrs) {
-          var list = angular.element('<ol class="toc-table"></ol>');
-          angular.forEach(
-            headerFinder(
-              articleFinder(element)),
+        link:     function(scope, element, attrs, article) {
+          var generateTOC = function() {
+            var list = angular.element('<ol class="toc-table"></ol>');
+            element.empty();
+            angular.forEach( article.listHeaders(),
               function(header) {
                 var content = angular.element(header).text();
                 list.append('<li class="toc-entry">'+ content +'</li>');
               }
-          );
-          element.append(list);
+            );
+            element.append(list);
+          };
+          generateTOC();
+          scope.$on('headerRegistered', generateTOC);
         }
       };
     });
