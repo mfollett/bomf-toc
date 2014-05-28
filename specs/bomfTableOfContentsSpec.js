@@ -1,4 +1,3 @@
-/*
 describe('bomfTableOfContents', function() {
   var article, element,
     HEADERS = [
@@ -8,7 +7,7 @@ describe('bomfTableOfContents', function() {
     ];
 
   beforeEach(function() {
-    module('bomf.table-of-contents-compiled');
+    module('bomf.table-of-contents');
 
     var contents = HEADERS.map(function(header) {
       return '<section>' +
@@ -57,4 +56,3 @@ describe('bomfTableOfContents', function() {
 
   });
 });
-*/
