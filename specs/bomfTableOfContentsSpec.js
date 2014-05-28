@@ -56,4 +56,43 @@ describe('bomfTableOfContents', function() {
       });
     });
   });
+
+  describe('new specs', function() {
+    beforeEach(function() {
+      module('bomf.table-of-contents');
+    });
+
+    describe('when presented hs 1-6', function() {
+      var article, element;
+
+      beforeEach(function() {
+        var headers = [1,2,3,4,5,6].map(function(i) {
+          return '<h' + i + '>Header ' + i + '</h' + i + '>';
+        }).join();
+        article = angular.element('<article>' +
+          '<bomf-table-of-contents></bomf-table-of-contents>' +
+          headers +
+          '</article>'
+        );
+
+        inject(function($rootScope, $compile) {
+          var scope = $rootScope.$new();
+          $compile(article)(scope);
+        });
+
+        element = angular.element(article.children()[0]);
+      });
+
+      it('includes each one in the TOC', function() {
+        // This approach implies order also. It would have been better as a
+        // separate test but I'll take it.
+        var expectedText = [1,2,3,4,5,6].map(function(i) {
+          return 'Header ' + i;
+        }).join('');
+        expect(element.text()).toEqual(expectedText);
+      });
+
+      // more tests would be good here.
+    });
+  });
 });

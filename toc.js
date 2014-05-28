@@ -33,10 +33,12 @@
             angular.forEach( article.listHeaders(),
               function(header) {
                 var content = angular.element(header).text();
-                list.append('<li class="toc-entry">'+ content +'</li>');
+                var c = 'toc-header-' + header.prop('nodeName').match(/\d/)[0];
+                list.append('<li class="toc-entry '+c+'">'+content+'</li>');
               }
             );
             element.append(list);
+            console.log(list.html());
           };
           generateTOC();
           scope.$on('headerRegistered', generateTOC);
