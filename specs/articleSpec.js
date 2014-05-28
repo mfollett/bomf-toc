@@ -1,10 +1,10 @@
 describe('article', function() {
-  var controller;
+  var controller, article;
 
   beforeEach(function() {
     module('bomf.table-of-contents');
 
-    var article = angular.element( '<article></article>');
+    article = angular.element( '<article></article>');
 
     inject(function($rootScope, $compile) {
       var scope = $rootScope.$new();
@@ -37,6 +37,13 @@ describe('article', function() {
 
     it('returns nothing when nothing has been registered', function() {
       expect(controller.listHeaders()).toEqual([]);
+    });
+
+    it('broadcasts the registered header', function() {
+      var scope = article.scope();
+      spyOn(scope, '$broadcast');
+      controller.registerHeader('a');
+      expect(scope.$broadcast).toHaveBeenCalledWith('headerRegistered');
     });
   });
 });

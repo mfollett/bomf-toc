@@ -10,10 +10,13 @@
   module.directive('article', function() {
       return {
         restrict:   'E',
-        scope:      false,
-        controller: function() {
+        scope:      true,
+        controller: function($scope) {
           var headers = [];
-          this.registerHeader = function(header) { headers.push(header); };
+          this.registerHeader = function(header) {
+            headers.push(header);
+            $scope.$broadcast('headerRegistered');
+          };
           this.listHeaders    = function() { return headers; };
         }
       };
