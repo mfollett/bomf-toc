@@ -6,15 +6,15 @@
 (function() {
   'use strict';
 
-  angular.module('bomf.table-of-contents', []).
-    directive('article', function() {
+  var module = angular.module('bomf.table-of-contents', []);
+  module.directive('article', function() {
       return {
         restrict:   'E',
         scope:      false,
         controller: function() {
           var headers = [];
           this.registerHeader = function(header) { headers.push(header); };
-          this.listHeaders    = function() { return angular.copy(headers); };
+          this.listHeaders    = function() { return headers; };
         }
       };
     }).
@@ -36,5 +36,21 @@
           element.append(list);
         }
       };
+    });
+
+    var headerLinker = function(scope, element, attrs, article) {
+      article.registerHeader(element);
+    };
+
+    [1,2,3,4,5,6].forEach(function(number) {
+      var header = 'h' + number;
+      module.directive(header, function() {
+        return {
+          require:  '^article',
+          restrict: 'E',
+          scope:    false,
+          link:     headerLinker
+        };
+      });
     });
 })();
