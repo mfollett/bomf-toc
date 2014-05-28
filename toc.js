@@ -17,7 +17,14 @@
             headers.push(header);
             $scope.$broadcast('headerRegistered');
           };
-          this.listHeaders    = function() { return headers; };
+          this.unregisterHeader = function(header) {
+            var index = headers.indexOf(header);
+            if(index !== -1) {
+              headers.splice(index, 1);
+              $scope.$broadcast('headerUnregistered');
+            }
+          };
+          this.listHeaders = function() { return headers; };
         }
       };
     }).
@@ -38,16 +45,19 @@
               }
             );
             element.append(list);
-            console.log(list.html());
           };
           generateTOC();
           scope.$on('headerRegistered', generateTOC);
+          scope.$on('headerUnregistered', generateTOC);
         }
       };
     });
 
     var headerLinker = function(scope, element, attrs, article) {
       article.registerHeader(element);
+      var unregister = function() {article.unregisterHeader(element)};
+      scope.$on('$destroy', unregister);
+      element.on('$destroy', unregister);
     };
 
     [1,2,3,4,5,6].forEach(function(number) {
